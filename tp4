@@ -1,0 +1,127 @@
+#Crée en 2023
+#crée par Adam Rubeya
+
+import random
+import arcade
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 800
+WINDOW_TITLE = "balles"
+#information du window qui va contenir les balles
+
+
+COLORS = []
+
+
+class MyGame(arcade.Window):
+    def __init__(self):
+        super().__init__(SCREEN_HEIGHT, SCREEN_WIDTH, "Exercice")
+        self.ball_list = []
+        self.rectangle_list = []
+
+#class MyGame, contient les infos du window et la liste pour les formes
+
+
+
+    def on_mouse_press(self, x: int, y: int, button: int, modifiers: int):
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            self.ball_list.append(balles(x,y))
+        elif button == arcade.MOUSE_BUTTON_RIGHT:
+            self.rectangle_list.append(rectangles(x,y))
+
+#grace a on mouse press, cliquer sur un bouton nous permet de faire spawn des formes
+
+    def setup(self):
+            self.ball = balles()
+            self.rectangles = rectangles()
+#setup pour la creation des balles et des rectangles
+    def on_draw(self):
+        arcade.start_render()
+        for i in self.ball_list:
+            i.draw()
+        self.ball.draw()
+        self.rectangles.draw()
+        arcade.finish_render()
+#dessine les balles et les rectangles
+
+    def on_update(self, delta_time: float):
+        self.ball.update()
+        for i in self.ball_list:
+            i.update()
+        self.rectangles.update()
+        for i in self.rectangle_list:
+            i.update
+#permet aux formes d'effectuer leurs mouvements
+
+
+
+
+class balles():
+    def __init__(self, x, y):
+
+        self.x = x
+        self.y = y
+        self.rayon_cercle = random.randint(10, 30)
+        self.color = arcade.color.SKY_BLUE
+        self.change_x = 6
+        self.change_y = 6
+
+    def update(self):
+        self.x += self.change_x
+        self.y += self.change_y
+
+        if self.x < self.rayon_cercle:
+            self.change_x *= -1
+        if self.x > SCREEN_WIDTH - self.rayon_cercle:
+            self.change_x *= -1
+        if self.y < self.rayon_cercle:
+            self.change_y *= -1
+        if self.y > SCREEN_HEIGHT - self.rayon_cercle:
+            self.change_y *= -1
+
+    def draw(self):
+        arcade.draw_circle_filled(self.x, self.y, self.rayon_cercle, self.color)
+#caracteristiques phyisque des balles qui seront crees ainsi que leurs mouvements
+class rectangles():
+    def __init__(self, x, y):
+
+        self.x = x
+        self.y = y
+        self.WIDHT = random.randint(20, 50)
+        self.LENGHT = random.randint(20, 50)
+        self.color = arcade.color.RED
+        self.change_x = 4
+        self.change_y = 4
+
+    def update(self):
+        self.x += self.change_x
+        self.y += self.change_y
+
+        if self.x < self.WIDHT:
+            self.change_x *= -1
+        if self.x > SCREEN_WIDTH - self.WIDHT:
+            self.change_x *= -1
+        if self.y < self.LENGHT:
+            self.change_y *= -1
+        if self.y > SCREEN_HEIGHT - self.LENGHT:
+            self.change_y *= -1
+
+    def draw(self):
+        arcade.draw_rectangle_filled(self.x, self.y, self.WIDHT, self.LENGHT, self.color)
+#caracteristiques des rectangles qui seront crees ainsi que leurs mouvements
+
+
+
+
+
+
+
+
+
+def main():
+    my_game = MyGame()
+    my_game.setup()
+    arcade.run()
+#permet le fonctionnement du programme avec les parties que j'ai defini (def)
+
+main()
